@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>재물보험 체크리스트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --primary-light: #e8f0fe;
+      --border: #dde2eb;
+      --bg-section: #f5f7fb;
+      --tooltip-bg: #111827;
+      --tooltip-text: #f9fafb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f2f4f8;
+      color: #111827;
+    }
+
+    .app {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header { margin-bottom: 24px; }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-light);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 4px 0 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 16px;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 16px 18px;
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    label {
+      font-size: 13px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .field {
+      margin-top: 10px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #4b5563;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .field-disabled label,
+    .field-disabled .field-label {
+      color: #9ca3af;
+    }
+    .field-disabled select {
+      background: #e5e7eb;
+      color: #9ca3af;
+      border-color: #d1d5db;
+      cursor: not-allowed;
+    }
+
+    .section {
+      margin-bottom: 12px;
+      border-radius: 10px;
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .section-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .chevron {
+      font-size: 16px;
+      color: #9ca3af;
+    }
+
+    .section-body {
+      padding: 10px 12px 12px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+      position: relative;
+    }
+
+    .coverage-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr) minmax(0, 0.8fr);
+      gap: 8px;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed #e5e7eb;
+    }
+
+    .coverage-row:last-child {
+      border-bottom: none;
+    }
+
+    @media (max-width: 720px) {
+      .coverage-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+    }
+
+    .coverage-main {
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .checkbox-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .switch {
+      position: relative;
+      width: 34px;
+      height: 18px;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #d1d5db;
+      transition: 0.2s;
+      border-radius: 999px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: 0.2s;
+      border-radius: 50%;
+    }
+    .switch input:checked + .slider {
+      background-color: var(--primary);
+    }
+    .switch input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+
+    .actions-bar-wrapper {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .actions-bar-top {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #checkResult {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px dashed #f97316;
+      background: #fff7ed;
+      color: #9a3412;
+      display: none;
+      flex: 1;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    @media (max-width: 720px) {
+      .actions-bar-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #checkResult {
+        width: 100%;
+      }
+    }
+
+    .auto-fire-box {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px dashed #cbd5f5;
+      background: #f3f4ff;
+      font-size: 12px;
+      color: #374151;
+    }
+
+    .auto-fire-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .auto-fire-title span.badge {
+      margin: 0;
+      padding: 2px 8px;
+      font-size: 10px;
+      border-radius: 999px;
+      background: #1d4ed8;
+      color: #eef2ff;
+    }
+
+    .auto-fire-value {
+      font-weight: 700;
+      color: #1d4ed8;
+      font-size: 20px;
+    }
+
+    .auto-fire-desc {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .summary {
+      font-size: 12px;
+      color: #4b5563;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .summary-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #10b981;
+    }
+
+    .summary-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+    }
+
+    .salon-only-row {
+      display: none;
+    }
+
+    .restaurant-only-row {
+      display: none;
+    }
+
+    /* 담보 설명 툴팁 */
+    .tooltip-trigger {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 1px solid #9ca3af;
+      font-size: 11px;
+      color: #6b7280;
+      cursor: default;
+      margin-left: 4px;
+      background: #fff;
+    }
+
+    .coverage-tooltip {
+      position: absolute;
+      z-index: 50;
+      min-width: 200px;
+      max-width: 260px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--tooltip-bg);
+      color: var(--tooltip-text);
+      font-size: 11px;
+      line-height: 1.4;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.35);
+      display: none;
+    }
+
+    .coverage-tooltip.tooltip-bottom {
+      left: 0;
+      top: 22px;
+    }
+    .coverage-tooltip.tooltip-bottom::before {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 12px;
+      border-width: 0 6px 6px 6px;
+      border-style: solid;
+      border-color: transparent transparent var(--tooltip-bg) transparent;
+    }
+
+    .coverage-tooltip.tooltip-top {
+      left: 0;
+      bottom: 22px;
+    }
+    .coverage-tooltip.tooltip-top::before {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 12px;
+      border-width: 6px 6px 0 6px;
+      border-style: solid;
+      border-color: var(--tooltip-bg) transparent transparent transparent;
+    }
+
+    .coverage-tooltip.visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="badge">재물보험 체크리스트</div>
+      <h1>업종별 재물보험 가입 조건 체크</h1>
+      <div class="subtitle">
+        업종과 기본 조건을 선택하면, 해당 업종에 맞는 담보 체크리스트와
+        의무가입 화재보험 종류가 자동으로 표시됩니다.
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="card-title">
+          <span class="dot"></span>
+          업종 및 기본 조건
+        </div>
+
+        <div class="field">
+          <div class="field-label">업종 선택</div>
+          <select id="industrySelect">
+            <option value="smallshop">소매점(문구점, 의류판매점 등)</option>
+            <option value="salon">미용실</option>
+            <option value="restaurant">음식점</option>
+          </select>
+        </div>
+
+        <div class="field field-cond field-disabled" id="fieldCondLocation">
+          <div class="field-label">조건1 - 위치</div>
+          <select id="condLocation" disabled>
+            <option value="1층">1층</option>
+            <option value="지하">지하</option>
+            <option value="2층 이상">2층 이상</option>
+          </select>
+        </div>
+
+        <div class="field field-cond field-disabled" id="fieldCondArea">
+          <div class="field-label">조건2 - 면적</div>
+          <select id="condArea" disabled>
+            <option value="small">20평 미만 (66m² 미만)</option>
+            <option value="mid">20평 이상 30평 미만 (66m² 이상 100m² 미만)</option>
+            <option value="large">30평 이상 (100m² 이상)</option>
+          </select>
+        </div>
+
+        <div class="auto-fire-box" id="autoFireBox">
+          <div class="auto-fire-title">
+            <span>의무가입 화재보험</span>
+            <span class="badge">자동 판정</span>
+          </div>
+          <div class="auto-fire-value" id="autoFireValue">의무가입 미대상</div>
+          <div class="auto-fire-desc" id="autoFireDesc">
+            조건1(위치), 조건2(면적)을 바탕으로 의무가입 대상 여부를 표시합니다.
+          </div>
+        </div>
+
+        <div class="summary">
+          <span class="summary-tag">
+            <span class="summary-dot"></span>
+            자동 판정 로직
+          </span>
+          <span>실제 법령 및 상품 기준과는 차이가 있을 수 있습니다.</span>
+        </div>
+      </aside>
+
+      <main>
+        <!-- 화재 관련 (공통: both) -->
+        <section class="section">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-title">화재 관련 (필수 가입(기본계약))</div>
+              <div class="section-tag">화재손해, 복구·수리비용 등 기본 재물 보장</div>
+            </div>
+            <div class="chevron">▾</div>
+          </div>
+          <div class="section-body">
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  화재손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    화재나 폭발로 건물·시설·집기·동산 등이 직접 입은 손해를 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 건물</label>
+                  <label><input type="checkbox" /> 시설</label>
+                  <label><input type="checkbox" /> 집기</label>
+                  <label><input type="checkbox" /> 동산</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  화재 복구/수리비용
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    화재로 손상된 건물·시설 등을 복구하거나 수리하는 데 드는 추가 비용을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 건물</label>
+                  <label><input type="checkbox" /> 시설</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 배상책임 -->
+        <section class="section">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-title">배상책임 (선택 가입(특약))</div>
+              <div class="section-tag">시설, 화재 관련 대인·대물 배상책임</div>
+            </div>
+            <div class="chevron">▾</div>
+          </div>
+          <div class="section-body">
+            <!-- 공통 -->
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  시설소유(관리)자 배상책임
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    점포 시설의 하자·관리 소홀로 고객이나 제3자에게 발생한 인적·물적 손해를 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 구내 보장</label>
+                  <label><input type="checkbox" /> 구내+구외 보장</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  화재(폭발포함) 배상책임
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    점포에서 발생한 화재·폭발로 이웃 상가나 주민에게 끼친 손해에 대한 배상책임을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 종업원 보장 O</label>
+                  <label><input type="checkbox" /> 종업원 보장 X</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 미용실 전용 -->
+            <div class="coverage-row salon-only-row" data-industry="salon">
+              <div>
+                <div class="coverage-main">
+                  이미용사 배상책임
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    시술 중 화학약품·기구 사용 등으로 고객에게 발생한 상해·피부·모발 손상을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 자기부담금(대인/대물) 10만원</label>
+                  <label><input type="checkbox" /> 자기부담금(대인/대물) 30만원</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="coverage-row salon-only-row" data-industry="salon">
+              <div>
+                <div class="coverage-main">
+                  주차장 배상책임
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    점포 부설 주차장에서 발생한 차량 파손·도난 등에 대한 법적 배상책임을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 30만원</label>
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 100만원</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="coverage-row salon-only-row" data-industry="salon">
+              <div>
+                <div class="coverage-main">
+                  보관자 배상책임(일반수탁물)
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    고객이 맡긴 외투·가방 등 수탁물을 분실하거나 훼손했을 때의 배상책임을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 30만원</label>
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 100만원</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 음식점 전용: 가스 배상책임 (체크박스 없음) -->
+            <div class="coverage-row restaurant-only-row" data-industry="restaurant">
+              <div>
+                <div class="coverage-main">
+                  가스 배상책임
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    조리용 가스 설비의 누출·폭발 등으로 제3자에게 발생한 인적·물적 손해에 대한 배상책임을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div></div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 음식점 전용: 음식물 배상책임 -->
+            <div class="coverage-row restaurant-only-row" data-industry="restaurant">
+              <div>
+                <div class="coverage-main">
+                  음식물 배상책임
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    제공한 음식물의 오염·부패 등으로 고객에게 식중독·장염 등의 인적 손해가 발생했을 때의 배상책임을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <!-- 음식물배상: 4개 체크박스 (2개 그룹) -->
+                <div class="checkbox-group">
+                  <label><input type="checkbox" data-subgroup="loc" /> 구내 보장</label>
+                  <label><input type="checkbox" data-subgroup="loc" /> 구내+구외 보장</label>
+                  <label><input type="checkbox" data-subgroup="deduct" /> 자기부담금 5만원</label>
+                  <label><input type="checkbox" data-subgroup="deduct" /> 자기부담금 5만원 초과</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 음식점 전용: 주차장 배상책임 -->
+            <div class="coverage-row restaurant-only-row" data-industry="restaurant">
+              <div>
+                <div class="coverage-main">
+                  주차장 배상책임
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    음식점 부설 주차장에서 발생한 차량 파손·도난 등에 대한 법적 배상책임을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 30만원</label>
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 100만원</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 음식점 전용: 보관자 배상책임(일반수탁물) -->
+            <div class="coverage-row restaurant-only-row" data-industry="restaurant">
+              <div>
+                <div class="coverage-main">
+                  보관자 배상책임(일반수탁물)
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    고객이 맡긴 외투·가방 등 수탁물을 분실하거나 훼손했을 때의 배상책임을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 30만원</label>
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 100만원</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 기타 손해/비용 -->
+        <section class="section">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <div class="section-title">기타 손해/비용 (선택 가입(특약))</div>
+              <div class="section-tag">전기위험, 휴업손해, 풍수재, 유리, 간판 등</div>
+            </div>
+            <div class="chevron">▾</div>
+          </div>
+          <div class="section-body">
+            <!-- 공통: 구내 폭발/파열손해 -->
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  구내 폭발/파열손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    보장구역 안에서 보일러·가스설비 등의 폭발·파열로 생긴 물적 손해를 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div></div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 음식점 전용: 급배수시설 누출손해 -->
+            <div class="coverage-row restaurant-only-row" data-industry="restaurant">
+              <div>
+                <div class="coverage-main">
+                  급배수시설 누출손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    급수·배수 배관 누수로 인한 바닥·벽·집기 등의 손해 및 인접 상가에 끼친 물적 손해를 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div></div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 공통: 전기 위험/손해 -->
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  전기 위험/손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    누전·합선·과전류 등 전기적 사고로 기계·전기설비가 손상된 경우를 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 5만원</label>
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 10만원</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 공통: 점포휴업손해 -->
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  점포휴업손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    화재 등 사고로 영업을 하지 못해 발생한 매출 손실을 일정 한도 내에서 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 면책일 없음</label>
+                  <label><input type="checkbox" /> 면책일 있음</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 공통: 점포휴업일당 -->
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  점포휴업일당
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    휴업 기간 동안 약정된 일당 금액을 지급하는 형태의 휴업손해 담보입니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 면책일 없음</label>
+                  <label><input type="checkbox" /> 면책일 있음</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 공통: 위조지폐손해 -->
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  위조지폐손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    영업 중 받은 위조지폐로 인해 발생한 금전적 손실을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div></div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 음식점 전용: 구내 냉동(냉장)물 손해 -->
+            <div class="coverage-row restaurant-only-row" data-industry="restaurant">
+              <div>
+                <div class="coverage-main">
+                  구내 냉동(냉장)물 손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    냉동·냉장 설비 고장 등으로 보관 중인 식재료가 부패하거나 손상된 경우의 손해를 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div></div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 공통: 유리손해 -->
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  유리손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    점포 쇼윈도·유리문 등이 파손되었을 때 교체·수리 비용을 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 2만원</label>
+                  <label><input type="checkbox" /> 자기부담금(1사고당) 20만원</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 공통: 야외간판 풍수재손해 -->
+            <div class="coverage-row" data-industry="both">
+              <div>
+                <div class="coverage-main">
+                  야외간판 풍수재손해
+                  <span class="tooltip-trigger" tabindex="0">?</span>
+                  <div class="coverage-tooltip tooltip-bottom">
+                    태풍·강풍·호우 등 풍수재로 야외 간판이 파손되거나 떨어져 생긴 손해를 보장합니다.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" /> 자기부담금 20만원</label>
+                  <label><input type="checkbox" /> 자기부담금 50만원</label>
+                </div>
+              </div>
+              <div>
+                <div class="field-label">가입 상태 - 미가입</div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="actions-bar-wrapper">
+          <div class="actions-bar-top">
+            <button id="checkCoverageBtn"
+              style="padding: 9px 20px; border-radius: 999px; border: 1px solid #1a73e8; background:#1a73e8; color:#fff; font-size:14px; font-weight:600; cursor:pointer;">
+              확인
+            </button>
+            <div id="checkResult"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+<script>
+  function toggleSection(headerEl) {
+    const section = headerEl.parentElement;
+    const body = section.querySelector(".section-body");
+    const chev = section.querySelector(".chevron");
+    const isHidden = body.style.display === "none";
+    body.style.display = isHidden ? "block" : "none";
+    chev.textContent = isHidden ? "▾" : "▸";
+  }
+
+  const industrySelect = document.getElementById("industrySelect");
+  const condLocation = document.getElementById("condLocation");
+  const condArea = document.getElementById("condArea");
+  const fieldCondLocation = document.getElementById("fieldCondLocation");
+  const fieldCondArea = document.getElementById("fieldCondArea");
+  const autoFireValue = document.getElementById("autoFireValue");
+  const autoFireDesc = document.getElementById("autoFireDesc");
+  const resultBox = document.getElementById("checkResult");
+
+  function setCondDisabled(disabled) {
+    if (!condLocation || !condArea || !fieldCondLocation || !fieldCondArea) return;
+    condLocation.disabled = disabled;
+    condArea.disabled = disabled;
+    if (disabled) {
+      fieldCondLocation.classList.add("field-disabled");
+      fieldCondArea.classList.add("field-disabled");
+    } else {
+      fieldCondLocation.classList.remove("field-disabled");
+      fieldCondArea.classList.remove("field-disabled");
+    }
+  }
+
+  function updateAutoFire() {
+    if (!condLocation || !condArea || !autoFireValue || !autoFireDesc) return;
+    const industry = industrySelect ? industrySelect.value : "smallshop";
+
+    if (industry === "smallshop" || industry === "salon") {
+      setCondDisabled(true);
+      autoFireValue.textContent = "의무가입 미대상";
+      autoFireDesc.textContent =
+        industry === "smallshop"
+          ? "소매점은 의무가입 화재보험 가입 대상이 아닙니다."
+          : "미용실은 의무가입 화재보험 대상 업종이 아니며, 별도 재물·배상 담보로 구성합니다.";
+      return;
+    }
+
+    setCondDisabled(false);
+
+    const loc = condLocation.value;
+    const area = condArea.value;
+
+    let result = "의무가입 미대상";
+    let desc = "조건1(위치), 조건2(면적)을 바탕으로 의무가입 대상 여부를 표시합니다.";
+
+    if (loc === "1층" && area === "large") {
+      result = "재난배상책임보험 의무가입대상";
+      desc = "1층에 위치하고 30평 이상인 경우, 재난배상책임보험 의무가입대상에 해당할 수 있습니다.";
+    }
+
+    if (loc === "지하" && (area === "mid" || area === "large")) {
+      result = "다중이용업소 화재배상책임보험 의무가입대상";
+      desc = "지하에 위치하고 20평 이상인 경우, 다중이용업소 화재배상책임보험 의무가입대상에 해당할 수 있습니다.";
+    }
+
+    if (loc === "2층 이상" && area === "large") {
+      result = "다중이용업소 화재배상책임보험 의무가입대상";
+      desc = "2층 이상에 위치하고 30평 이상인 경우, 다중이용업소 화재배상책임보험 의무가입대상에 해당할 수 있습니다.";
+    }
+
+    autoFireValue.textContent = result;
+    autoFireDesc.textContent = desc;
+  }
+
+  // 단일선택 담보 이름 목록
+  const singleChoiceNames = [
+    "시설소유(관리)자 배상책임",
+    "화재(폭발포함) 배상책임",
+    "화재(폭발포함)배상책임",
+    "전기위험/손해",
+    "전기 위험/손해",
+    "전기손해",
+    "점포휴업손해",
+    "점포휴업일당",
+    "유리손해",
+    "야외간판 풍수재손해",
+    "주차장 배상책임",
+    "보관자 배상책임(일반수탁물)",
+    "이미용사 배상책임",
+    "음식물 배상책임"
+  ];
+
+  function normalizeText(str) {
+    return (str || "").replace(/\s+/g, "").trim();
+  }
+
+  function getRowTitleText(row) {
+    const mainEl = row.querySelector(".coverage-main");
+    if (!mainEl) return "";
+    const clone = mainEl.cloneNode(true);
+    const t1 = clone.querySelector(".tooltip-trigger");
+    if (t1) t1.remove();
+    const t2 = clone.querySelector(".coverage-tooltip");
+    if (t2) t2.remove();
+    return clone.textContent.trim();
+  }
+
+  function isSingleChoiceRow(row) {
+    const title = getRowTitleText(row);
+    const normalized = normalizeText(title);
+    return singleChoiceNames.some(name => normalizeText(name) === normalized);
+  }
+
+  function setStatusLabelText(row, isOn) {
+    const label = row.querySelector(".field-label");
+    if (!label) return;
+    label.textContent = isOn ? "가입 상태 - 가입" : "가입 상태 - 미가입";
+  }
+
+  // 음식물배상 책임인지 체크
+  function isFoodLiabilityRow(row) {
+    const title = getRowTitleText(row);
+    return normalizeText(title) === normalizeText("음식물 배상책임");
+  }
+
+  function bindCheckboxSwitchSync() {
+    const rows = document.querySelectorAll(".coverage-row");
+
+    rows.forEach(row => {
+      const checkboxGroup = row.querySelector(".checkbox-group");
+      const switchInput = row.querySelector(".switch input[type='checkbox']");
+      if (!switchInput) return;
+
+      setStatusLabelText(row, switchInput.checked);
+
+      // 체크박스 없는 행: 스위치만 동작
+      if (!checkboxGroup) {
+        switchInput.addEventListener("change", () => {
+          const checked = switchInput.checked;
+          setStatusLabelText(row, checked);
+        });
+        return;
+      }
+
+      const checkboxes = Array.from(checkboxGroup.querySelectorAll("input[type='checkbox']"));
+      if (checkboxes.length === 0) return;
+
+      const singleChoice = isSingleChoiceRow(row);
+      const isFood = isFoodLiabilityRow(row);
+
+      // 체크박스 클릭 시
+      checkboxes.forEach(cb => {
+        cb.addEventListener("change", () => {
+          // 단일선택 담보 처리
+          if (singleChoice && cb.checked) {
+            if (isFood) {
+              // 음식물 배상: subgroup 기준으로만 상호배타
+              const subgroup = cb.getAttribute("data-subgroup");
+              if (subgroup) {
+                checkboxes.forEach(other => {
+                  if (other !== cb && other.getAttribute("data-subgroup") === subgroup) {
+                    other.checked = false;
+                  }
+                });
+              }
+            } else {
+              // 일반 단일선택 담보: 같은 행 안의 다른 체크박스 전부 해제
+              checkboxes.forEach(other => {
+                if (other !== cb) other.checked = false;
+              });
+            }
+          }
+
+          const anyChecked = checkboxes.some(c => c.checked);
+          switchInput.checked = anyChecked;
+          setStatusLabelText(row, anyChecked);
+        });
+      });
+
+      // 스위치 변경 시
+      switchInput.addEventListener("change", () => {
+        const checked = switchInput.checked;
+
+        if (!checked) {
+          checkboxes.forEach(c => {
+            c.checked = false;
+          });
+        }
+        setStatusLabelText(row, checked);
+      });
+    });
+  }
+
+  function isRowRequiredForCurrentIndustry(row, currentIndustry) {
+    const attr = row.getAttribute("data-industry") || "both";
+    if (attr === "both") return true;
+    return attr === currentIndustry;
+  }
+
+  function bindCheckButton() {
+    const btn = document.getElementById("checkCoverageBtn");
+    if (!btn || !resultBox) return;
+
+    btn.addEventListener("click", () => {
+      const rows = document.querySelectorAll(".coverage-row");
+      const missing = [];
+      const detailMissing = [];
+      const currentIndustry = industrySelect ? industrySelect.value : "smallshop";
+
+      rows.forEach(row => {
+        if (!isRowRequiredForCurrentIndustry(row, currentIndustry)) return;
+
+        const name = getRowTitleText(row);
+
+        const switchInput = row.querySelector(".switch input[type='checkbox']");
+        const isOn = switchInput ? switchInput.checked : false;
+
+        const checkboxGroup = row.querySelector(".checkbox-group");
+        const checkboxes = checkboxGroup
+          ? Array.from(checkboxGroup.querySelectorAll("input[type='checkbox']"))
+          : [];
+
+        const hasCheckbox = checkboxes.length > 0;
+        const anyChecked = hasCheckbox ? checkboxes.some(c => c.checked) : true;
+
+        if (hasCheckbox && isOn && !anyChecked) {
+          detailMissing.push(name);
+          return;
+        }
+
+        if (!isOn) {
+          missing.push(name);
+        }
+      });
+
+      resultBox.style.display = "block";
+
+      if (detailMissing.length > 0) {
+        resultBox.style.borderColor = "#f97316";
+        resultBox.style.background = "#fff7ed";
+        resultBox.style.color = "#9a3412";
+
+        const joinedNames = detailMissing.join(", ");
+        resultBox.textContent = `${joinedNames} 담보의 세부사항을 선택해 주세요.`;
+        return;
+      }
+
+      if (missing.length === 0) {
+        let doneMsg = "";
+
+        if (currentIndustry === "salon") {
+          doneMsg = "미용실 기준 필수담보가 모두 가입되어 있습니다.";
+        } else if (currentIndustry === "smallshop") {
+          doneMsg = "소매점(문구점, 의류판매점 등) 기준 필수 담보가 모두 가입되어 있습니다.";
+        } else if (currentIndustry === "restaurant") {
+          doneMsg = "음식점 기준 필수 담보가 모두 가입되어 있습니다.";
+        } else {
+          doneMsg = "해당 업종 기준 필수 담보가 모두 가입되어 있습니다.";
+        }
+
+        resultBox.style.borderColor = "#10b981";
+        resultBox.style.background = "#ecfdf5";
+        resultBox.style.color = "#065f46";
+        resultBox.textContent = doneMsg;
+      } else {
+        resultBox.style.borderColor = "#f97316";
+        resultBox.style.background = "#fff7ed";
+        resultBox.style.color = "#9a3412";
+
+        const joinedNames = missing.join(", ");
+        resultBox.textContent = `${joinedNames} 담보의 보완이 필요합니다.`;
+      }
+    });
+  }
+
+  function resetAllSelections() {
+    const rows = document.querySelectorAll(".coverage-row");
+    rows.forEach(row => {
+      const inputs = row.querySelectorAll("input[type='checkbox']");
+      inputs.forEach(i => {
+        i.checked = false;
+      });
+      setStatusLabelText(row, false);
+      const sw = row.querySelector(".switch input[type='checkbox']");
+      if (sw) sw.checked = false;
+    });
+    if (resultBox) {
+      resultBox.style.display = "none";
+      resultBox.textContent = "";
+    }
+    hideAllTooltips();
+  }
+
+  function updateSalonRows() {
+    const industry = industrySelect ? industrySelect.value : "smallshop";
+    const salonRows = document.querySelectorAll(".salon-only-row");
+    salonRows.forEach(row => {
+      const visible = industry === "salon";
+      row.style.display = visible ? "grid" : "none";
+
+      if (!visible) {
+        const inputs = row.querySelectorAll("input[type='checkbox']");
+        inputs.forEach(i => {
+          i.checked = false;
+        });
+        const switchInput = row.querySelector(".switch input[type='checkbox']");
+        if (switchInput) {
+          switchInput.checked = false;
+        }
+        setStatusLabelText(row, false);
+      }
+    });
+  }
+
+  function updateRestaurantRows() {
+    const industry = industrySelect ? industrySelect.value : "smallshop";
+    const restaurantRows = document.querySelectorAll(".restaurant-only-row");
+    restaurantRows.forEach(row => {
+      const visible = industry === "restaurant";
+      row.style.display = visible ? "grid" : "none";
+
+      if (!visible) {
+        const inputs = row.querySelectorAll("input[type='checkbox']");
+        inputs.forEach(i => {
+          i.checked = false;
+        });
+        const switchInput = row.querySelector(".switch input[type='checkbox']");
+        if (switchInput) {
+          switchInput.checked = false;
+        }
+        setStatusLabelText(row, false);
+      }
+    });
+  }
+
+  // 툴팁
+  function hideAllTooltips() {
+    document.querySelectorAll(".coverage-tooltip.visible").forEach(t => {
+      t.classList.remove("visible");
+    });
+  }
+
+  function adjustTooltipDirection(tooltip) {
+    tooltip.classList.remove("tooltip-top");
+    tooltip.classList.add("tooltip-bottom");
+
+    const rect = tooltip.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (rect.bottom > viewportHeight - 8) {
+      tooltip.classList.remove("tooltip-bottom");
+      tooltip.classList.add("tooltip-top");
+    } else {
+      tooltip.classList.remove("tooltip-top");
+      tooltip.classList.add("tooltip-bottom");
+    }
+  }
+
+  function bindTooltips() {
+    const triggers = document.querySelectorAll(".tooltip-trigger");
+
+    triggers.forEach(trigger => {
+      let hideTimeout = null;
+      const tooltip = trigger.nextElementSibling;
+
+      if (!tooltip || !tooltip.classList.contains("coverage-tooltip")) return;
+
+      const show = () => {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+        hideAllTooltips();
+        tooltip.classList.add("visible");
+        adjustTooltipDirection(tooltip);
+      };
+
+      const scheduleHide = () => {
+        hideTimeout = setTimeout(() => {
+          tooltip.classList.remove("visible");
+        }, 150);
+      };
+
+      trigger.addEventListener("mouseenter", show);
+      trigger.addEventListener("focus", show);
+      trigger.addEventListener("mouseleave", scheduleHide);
+      trigger.addEventListener("blur", scheduleHide);
+
+      tooltip.addEventListener("mouseenter", () => {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+      });
+      tooltip.addEventListener("mouseleave", scheduleHide);
+    });
+
+    document.addEventListener("click", e => {
+      if (e.target.closest(".coverage-main")) return;
+      hideAllTooltips();
+    });
+
+    document.addEventListener("scroll", hideAllTooltips, true);
+  }
+
+  function initAll() {
+    try {
+      updateAutoFire();
+      updateSalonRows();
+      updateRestaurantRows();
+      bindCheckboxSwitchSync();
+      bindCheckButton();
+      bindTooltips();
+    } catch (e) {
+      // 인앱 브라우저에서 에러 발생 시 디버깅용
+      console.error("initAll error", e);
+    }
+  }
+
+  if (industrySelect) {
+    industrySelect.addEventListener("change", () => {
+      updateAutoFire();
+      updateSalonRows();
+      updateRestaurantRows();
+      resetAllSelections();
+    });
+  }
+  if (condLocation) condLocation.addEventListener("change", updateAutoFire);
+  if (condArea) condArea.addEventListener("change", updateAutoFire);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initAll();
+  });
+
+  // iOS 인앱 브라우저 대비: DOMContentLoaded 이전에도 한 번 시도
+  initAll();
+</script>
+</body>
+</html>
