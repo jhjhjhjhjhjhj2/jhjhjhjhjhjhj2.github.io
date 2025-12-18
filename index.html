@@ -195,11 +195,18 @@
 
     .coverage-main {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 4px;
       position: relative;
+    }
+
+    .coverage-desc {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
+      line-height: 1.5;
     }
 
     .checkbox-group {
@@ -361,15 +368,10 @@
       background: #f9fafb;
     }
 
-    .salon-only-row {
-      display: none;
-    }
+    .salon-only-row { display: none; }
 
-    .restaurant-only-row {
-      display: none;
-    }
+    .restaurant-only-row { display: none; }
 
-    /* 담보 설명 툴팁 */
     .tooltip-trigger {
       display: inline-flex;
       justify-content: center;
@@ -378,7 +380,7 @@
       height: 16px;
       border-radius: 999px;
       border: 1px solid #9ca3af;
-      font-size: 11px;
+      font-size: 10px;
       color: #6b7280;
       cursor: default;
       margin-left: 4px;
@@ -430,6 +432,22 @@
 
     .coverage-tooltip.visible {
       display: block;
+    }
+
+    /* 설명 컬럼 - 체크박스 컬럼 사이 간격 강화 */
+    .coverage-row > div:nth-child(2) {
+      padding-left: 10px;
+    }
+    .coverage-row > div:nth-child(3) {
+      padding-left: 8px;
+    }
+    @media (min-width: 721px) {
+      .coverage-row > div:nth-child(2) {
+        padding-left: 16px;
+      }
+      .coverage-row > div:nth-child(3) {
+        padding-left: 10px;
+      }
     }
   </style>
 </head>
@@ -499,7 +517,7 @@
       </aside>
 
       <main>
-        <!-- 화재 관련 (공통: both) -->
+        <!-- 화재 관련 (기본계약) -->
         <section class="section">
           <div class="section-header" onclick="toggleSection(this)">
             <div class="section-header-left">
@@ -513,11 +531,8 @@
               <div>
                 <div class="coverage-main">
                   화재손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    화재나 폭발로 건물·시설·집기·동산 등이 직접 입은 손해를 보장합니다.
-                  </div>
                 </div>
+                <div class="coverage-desc" data-title="화재손해"></div>
               </div>
               <div>
                 <div class="checkbox-group">
@@ -540,11 +555,8 @@
               <div>
                 <div class="coverage-main">
                   화재 복구/수리비용
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    화재로 손상된 건물·시설 등을 복구하거나 수리하는 데 드는 추가 비용을 보장합니다.
-                  </div>
                 </div>
+                <div class="coverage-desc" data-title="화재 복구/수리비용"></div>
               </div>
               <div>
                 <div class="checkbox-group">
@@ -573,21 +585,19 @@
             <div class="chevron">▾</div>
           </div>
           <div class="section-body">
-            <!-- 공통 -->
             <div class="coverage-row" data-industry="both">
               <div>
                 <div class="coverage-main">
                   시설소유(관리)자 배상책임
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    점포 시설의 하자·관리 소홀로 고객이나 제3자에게 발생한 인적·물적 손해를 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="시설소유(관리)자 배상책임"></div>
                 </div>
+                <div class="coverage-desc" data-title="시설소유(관리)자 배상책임"></div>
               </div>
               <div>
                 <div class="checkbox-group">
-                  <label><input type="checkbox" /> 구내 보장</label>
-                  <label><input type="checkbox" /> 구내+구외 보장</label>
+                  <label><input type="checkbox" /> 자기부담금 10만원</label>
+                  <label><input type="checkbox" /> 자기부담금 10만원 초과</label>
                 </div>
               </div>
               <div>
@@ -603,11 +613,10 @@
               <div>
                 <div class="coverage-main">
                   화재(폭발포함) 배상책임
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    점포에서 발생한 화재·폭발로 이웃 상가나 주민에게 끼친 손해에 대한 배상책임을 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="화재(폭발포함) 배상책임"></div>
                 </div>
+                <div class="coverage-desc" data-title="화재(폭발포함) 배상책임"></div>
               </div>
               <div>
                 <div class="checkbox-group">
@@ -624,16 +633,14 @@
               </div>
             </div>
 
-            <!-- 미용실 전용 -->
             <div class="coverage-row salon-only-row" data-industry="salon">
               <div>
                 <div class="coverage-main">
                   이미용사 배상책임
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    시술 중 화학약품·기구 사용 등으로 고객에게 발생한 상해·피부·모발 손상을 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="이미용사 배상책임"></div>
                 </div>
+                <div class="coverage-desc" data-title="이미용사 배상책임"></div>
               </div>
               <div>
                 <div class="checkbox-group">
@@ -653,37 +660,11 @@
             <div class="coverage-row salon-only-row" data-industry="salon">
               <div>
                 <div class="coverage-main">
-                  주차장 배상책임
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    점포 부설 주차장에서 발생한 차량 파손·도난 등에 대한 법적 배상책임을 보장합니다.
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="checkbox-group">
-                  <label><input type="checkbox" /> 자기부담금(1사고당) 30만원</label>
-                  <label><input type="checkbox" /> 자기부담금(1사고당) 100만원</label>
-                </div>
-              </div>
-              <div>
-                <div class="field-label">가입 상태 - 미가입</div>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <div class="coverage-row salon-only-row" data-industry="salon">
-              <div>
-                <div class="coverage-main">
                   보관자 배상책임(일반수탁물)
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    고객이 맡긴 외투·가방 등 수탁물을 분실하거나 훼손했을 때의 배상책임을 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="보관자 배상책임(일반수탁물)-미용실"></div>
                 </div>
+                <div class="coverage-desc" data-title="보관자 배상책임(일반수탁물)-미용실"></div>
               </div>
               <div>
                 <div class="checkbox-group">
@@ -700,16 +681,14 @@
               </div>
             </div>
 
-            <!-- 음식점 전용: 가스 배상책임 (체크박스 없음) -->
             <div class="coverage-row restaurant-only-row" data-industry="restaurant">
               <div>
                 <div class="coverage-main">
                   가스 배상책임
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    조리용 가스 설비의 누출·폭발 등으로 제3자에게 발생한 인적·물적 손해에 대한 배상책임을 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="가스 배상책임"></div>
                 </div>
+                <div class="coverage-desc" data-title="가스 배상책임"></div>
               </div>
               <div></div>
               <div>
@@ -721,19 +700,16 @@
               </div>
             </div>
 
-            <!-- 음식점 전용: 음식물 배상책임 -->
             <div class="coverage-row restaurant-only-row" data-industry="restaurant">
               <div>
                 <div class="coverage-main">
                   음식물 배상책임
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    제공한 음식물의 오염·부패 등으로 고객에게 식중독·장염 등의 인적 손해가 발생했을 때의 배상책임을 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="음식물 배상책임"></div>
                 </div>
+                <div class="coverage-desc" data-title="음식물 배상책임"></div>
               </div>
               <div>
-                <!-- 음식물배상: 4개 체크박스 (2개 그룹) -->
                 <div class="checkbox-group">
                   <label><input type="checkbox" data-subgroup="loc" /> 구내 보장</label>
                   <label><input type="checkbox" data-subgroup="loc" /> 구내+구외 보장</label>
@@ -750,42 +726,14 @@
               </div>
             </div>
 
-            <!-- 음식점 전용: 주차장 배상책임 -->
-            <div class="coverage-row restaurant-only-row" data-industry="restaurant">
-              <div>
-                <div class="coverage-main">
-                  주차장 배상책임
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    음식점 부설 주차장에서 발생한 차량 파손·도난 등에 대한 법적 배상책임을 보장합니다.
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="checkbox-group">
-                  <label><input type="checkbox" /> 자기부담금(1사고당) 30만원</label>
-                  <label><input type="checkbox" /> 자기부담금(1사고당) 100만원</label>
-                </div>
-              </div>
-              <div>
-                <div class="field-label">가입 상태 - 미가입</div>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 음식점 전용: 보관자 배상책임(일반수탁물) -->
             <div class="coverage-row restaurant-only-row" data-industry="restaurant">
               <div>
                 <div class="coverage-main">
                   보관자 배상책임(일반수탁물)
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    고객이 맡긴 외투·가방 등 수탁물을 분실하거나 훼손했을 때의 배상책임을 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="보관자 배상책임(일반수탁물)-음식점"></div>
                 </div>
+                <div class="coverage-desc" data-title="보관자 배상책임(일반수탁물)-음식점"></div>
               </div>
               <div>
                 <div class="checkbox-group">
@@ -809,21 +757,19 @@
           <div class="section-header" onclick="toggleSection(this)">
             <div class="section-header-left">
               <div class="section-title">기타 손해/비용 (선택 가입(특약))</div>
-              <div class="section-tag">전기위험, 휴업손해, 풍수재, 유리, 간판 등</div>
+              <div class="section-tag">전기위험, 점포휴업일당, 유리손해 등</div>
             </div>
             <div class="chevron">▾</div>
           </div>
           <div class="section-body">
-            <!-- 공통: 구내 폭발/파열손해 -->
             <div class="coverage-row" data-industry="both">
               <div>
                 <div class="coverage-main">
                   구내 폭발/파열손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    보장구역 안에서 보일러·가스설비 등의 폭발·파열로 생긴 물적 손해를 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="구내 폭발/파열손해"></div>
                 </div>
+                <div class="coverage-desc" data-title="구내 폭발/파열손해"></div>
               </div>
               <div></div>
               <div>
@@ -835,16 +781,14 @@
               </div>
             </div>
 
-            <!-- 음식점 전용: 급배수시설 누출손해 -->
             <div class="coverage-row restaurant-only-row" data-industry="restaurant">
               <div>
                 <div class="coverage-main">
                   급배수시설 누출손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    급수·배수 배관 누수로 인한 바닥·벽·집기 등의 손해 및 인접 상가에 끼친 물적 손해를 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="급배수시설 누출손해"></div>
                 </div>
+                <div class="coverage-desc" data-title="급배수시설 누출손해"></div>
               </div>
               <div></div>
               <div>
@@ -856,16 +800,14 @@
               </div>
             </div>
 
-            <!-- 공통: 전기 위험/손해 -->
             <div class="coverage-row" data-industry="both">
               <div>
                 <div class="coverage-main">
                   전기 위험/손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    누전·합선·과전류 등 전기적 사고로 기계·전기설비가 손상된 경우를 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="전기 위험/손해"></div>
                 </div>
+                <div class="coverage-desc" data-title="전기 위험/손해"></div>
               </div>
               <div>
                 <div class="checkbox-group">
@@ -882,42 +824,14 @@
               </div>
             </div>
 
-            <!-- 공통: 점포휴업손해 -->
-            <div class="coverage-row" data-industry="both">
-              <div>
-                <div class="coverage-main">
-                  점포휴업손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    화재 등 사고로 영업을 하지 못해 발생한 매출 손실을 일정 한도 내에서 보장합니다.
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="checkbox-group">
-                  <label><input type="checkbox" /> 면책일 없음</label>
-                  <label><input type="checkbox" /> 면책일 있음</label>
-                </div>
-              </div>
-              <div>
-                <div class="field-label">가입 상태 - 미가입</div>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 공통: 점포휴업일당 -->
             <div class="coverage-row" data-industry="both">
               <div>
                 <div class="coverage-main">
                   점포휴업일당
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    휴업 기간 동안 약정된 일당 금액을 지급하는 형태의 휴업손해 담보입니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="점포휴업일당"></div>
                 </div>
+                <div class="coverage-desc" data-title="점포휴업일당"></div>
               </div>
               <div>
                 <div class="checkbox-group">
@@ -934,37 +848,14 @@
               </div>
             </div>
 
-            <!-- 공통: 위조지폐손해 -->
-            <div class="coverage-row" data-industry="both">
-              <div>
-                <div class="coverage-main">
-                  위조지폐손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    영업 중 받은 위조지폐로 인해 발생한 금전적 손실을 보장합니다.
-                  </div>
-                </div>
-              </div>
-              <div></div>
-              <div>
-                <div class="field-label">가입 상태 - 미가입</div>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 음식점 전용: 구내 냉동(냉장)물 손해 -->
             <div class="coverage-row restaurant-only-row" data-industry="restaurant">
               <div>
                 <div class="coverage-main">
                   구내 냉동(냉장)물 손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    냉동·냉장 설비 고장 등으로 보관 중인 식재료가 부패하거나 손상된 경우의 손해를 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="구내 냉동(냉장)물 손해"></div>
                 </div>
+                <div class="coverage-desc" data-title="구내 냉동(냉장)물 손해"></div>
               </div>
               <div></div>
               <div>
@@ -976,47 +867,19 @@
               </div>
             </div>
 
-            <!-- 공통: 유리손해 -->
             <div class="coverage-row" data-industry="both">
               <div>
                 <div class="coverage-main">
                   유리손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    점포 쇼윈도·유리문 등이 파손되었을 때 교체·수리 비용을 보장합니다.
-                  </div>
+                  <span class="tooltip-trigger" tabindex="0">예</span>
+                  <div class="coverage-tooltip tooltip-bottom" data-title="유리손해"></div>
                 </div>
+                <div class="coverage-desc" data-title="유리손해"></div>
               </div>
               <div>
                 <div class="checkbox-group">
                   <label><input type="checkbox" /> 자기부담금(1사고당) 2만원</label>
                   <label><input type="checkbox" /> 자기부담금(1사고당) 20만원</label>
-                </div>
-              </div>
-              <div>
-                <div class="field-label">가입 상태 - 미가입</div>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 공통: 야외간판 풍수재손해 -->
-            <div class="coverage-row" data-industry="both">
-              <div>
-                <div class="coverage-main">
-                  야외간판 풍수재손해
-                  <span class="tooltip-trigger" tabindex="0">?</span>
-                  <div class="coverage-tooltip tooltip-bottom">
-                    태풍·강풍·호우 등 풍수재로 야외 간판이 파손되거나 떨어져 생긴 손해를 보장합니다.
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="checkbox-group">
-                  <label><input type="checkbox" /> 자기부담금 20만원</label>
-                  <label><input type="checkbox" /> 자기부담금 50만원</label>
                 </div>
               </div>
               <div>
@@ -1033,7 +896,7 @@
         <div class="actions-bar-wrapper">
           <div class="actions-bar-top">
             <button id="checkCoverageBtn"
-              style="padding: 9px 20px; border-radius: 999px; border: 1px solid #1a73e8; background:#1a73e8; color:#fff; font-size:14px; font-weight:600; cursor:pointer;">
+              style="padding:9px 20px;border-radius:999px;border:1px solid #1a73e8;background:#1a73e8;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">
               확인
             </button>
             <div id="checkResult"></div>
@@ -1116,7 +979,6 @@
     autoFireDesc.textContent = desc;
   }
 
-  // 단일선택 담보 이름 목록
   const singleChoiceNames = [
     "시설소유(관리)자 배상책임",
     "화재(폭발포함) 배상책임",
@@ -1124,11 +986,8 @@
     "전기위험/손해",
     "전기 위험/손해",
     "전기손해",
-    "점포휴업손해",
     "점포휴업일당",
     "유리손해",
-    "야외간판 풍수재손해",
-    "주차장 배상책임",
     "보관자 배상책임(일반수탁물)",
     "이미용사 배상책임",
     "음식물 배상책임"
@@ -1161,7 +1020,6 @@
     label.textContent = isOn ? "가입 상태 - 가입" : "가입 상태 - 미가입";
   }
 
-  // 음식물배상 책임인지 체크
   function isFoodLiabilityRow(row) {
     const title = getRowTitleText(row);
     return normalizeText(title) === normalizeText("음식물 배상책임");
@@ -1177,7 +1035,6 @@
 
       setStatusLabelText(row, switchInput.checked);
 
-      // 체크박스 없는 행: 스위치만 동작
       if (!checkboxGroup) {
         switchInput.addEventListener("change", () => {
           const checked = switchInput.checked;
@@ -1192,13 +1049,10 @@
       const singleChoice = isSingleChoiceRow(row);
       const isFood = isFoodLiabilityRow(row);
 
-      // 체크박스 클릭 시
       checkboxes.forEach(cb => {
         cb.addEventListener("change", () => {
-          // 단일선택 담보 처리
           if (singleChoice && cb.checked) {
             if (isFood) {
-              // 음식물 배상: subgroup 기준으로만 상호배타
               const subgroup = cb.getAttribute("data-subgroup");
               if (subgroup) {
                 checkboxes.forEach(other => {
@@ -1208,7 +1062,6 @@
                 });
               }
             } else {
-              // 일반 단일선택 담보: 같은 행 안의 다른 체크박스 전부 해제
               checkboxes.forEach(other => {
                 if (other !== cb) other.checked = false;
               });
@@ -1221,7 +1074,6 @@
         });
       });
 
-      // 스위치 변경 시
       switchInput.addEventListener("change", () => {
         const checked = switchInput.checked;
 
@@ -1377,7 +1229,6 @@
     });
   }
 
-  // 툴팁
   function hideAllTooltips() {
     document.querySelectorAll(".coverage-tooltip.visible").forEach(t => {
       t.classList.remove("visible");
@@ -1447,6 +1298,153 @@
     document.addEventListener("scroll", hideAllTooltips, true);
   }
 
+  const COVERAGE_INFO = {
+    "화재손해": {
+      desc: "화재나 폭발로 건물·시설·집기·동산 등이 직접 입은 손해를 보장합니다.",
+      examples: { smallshop: null, salon: null, restaurant: null }
+    },
+    "화재 복구/수리비용": {
+      desc: "화재로 손상된 건물·시설 등을 복구하거나 수리하는 데 드는 추가 비용을 보장합니다.",
+      examples: { smallshop: null, salon: null, restaurant: null }
+    },
+    "시설소유(관리)자 배상책임": {
+      desc: "점포 시설의 하자·관리 소홀로 고객이나 제3자에게 발생한 인적·물적 손해를 보장합니다.",
+      examples: {
+        smallshop: "예) 의류매장 진열대 모서리에 고객이 부딪혀 넘어져 다친 경우",
+        salon: "예) 미용실 바닥 물기에 고객이 미끄러져 넘어져 부상을 입은 경우",
+        restaurant: "예) 음식점 입구 턱에 걸려 손님이 넘어져 상해를 입은 경우"
+      }
+    },
+    "화재(폭발포함) 배상책임": {
+      desc: "점포에서 발생한 화재·폭발로 이웃 상가나 주민에게 끼친 손해에 대한 배상책임을 보장합니다.",
+      examples: {
+        smallshop: "예) 문구점에서 발생한 화재가 위층 사무실로 번져 집기를 태운 경우",
+        salon: "예) 미용실 전기기구에서 불이 나 옆 점포 간판과 집기가 손상된 경우",
+        restaurant: "예) 음식점 주방 화재가 인접 상가로 번져 집기와 비품을 태운 경우"
+      }
+    },
+    "이미용사 배상책임": {
+      desc: "시술 중 화학약품·기구 사용 등으로 고객에게 발생한 상해·피부·모발 손상을 보장합니다.",
+      examples: {
+        smallshop: null,
+        salon: "예) 염색약 사용 중 고객 두피에 화학 화상이 발생하거나 파마 시술로 모발이 심하게 손상된 경우",
+        restaurant: null
+      }
+    },
+    "보관자 배상책임(일반수탁물)-미용실": {
+      desc: "미용실에서 고객이 맡긴 외투·가방 등 수탁물이 오염·훼손되었을 때의 배상책임을 보장합니다.",
+      examples: {
+        smallshop: null,
+        salon: "예) 미용실에 보관 중이던 고객 외투에 염색약이 튀어 오염되거나 훼손된 경우",
+        restaurant: null
+      }
+    },
+    "가스 배상책임": {
+      desc: "조리용 가스 설비의 누출·폭발 등으로 제3자에게 발생한 인적·물적 손해에 대한 배상책임을 보장합니다.",
+      examples: {
+        smallshop: null,
+        salon: null,
+        restaurant: "예) 조리용 가스 배관 누출로 작은 폭발이 발생해 인접 점포 유리와 집기가 파손된 경우"
+      }
+    },
+    "음식물 배상책임": {
+      desc: "제공한 음식물의 오염·부패, 조리과정의 과실 등으로 고객에게 인적·물적 손해가 발생했을 때의 배상책임을 보장합니다.",
+      examples: {
+        smallshop: null,
+        salon: null,
+        restaurant: "예) 상했거나 조리 미흡한 음식의 제공으로 손님이 식중독에 걸려 치료비와 위자료를 청구한 경우, 종업원이 실수로 음식물을 쏟아 고객의 신체, 재물에 손해를 입혔을 경우"
+      }
+    },
+    "보관자 배상책임(일반수탁물)-음식점": {
+      desc: "음식점에서 고객이 맡긴 외투·가방 등 수탁물이 오염·훼손되었을 때의 배상책임을 보장합니다.",
+      examples: {
+        smallshop: null,
+        salon: null,
+        restaurant: "예) 음식점에서 손님이 배터리 충전을 위해 맡겨둔 핸드폰을 직원이 실수로 떨어뜨려 파손된 경우"
+      }
+    },
+    "구내 폭발/파열손해": {
+      desc: "보장구역 안에서 보일러·가스설비 등의 폭발·파열로 생긴 물적 손해를 보장합니다.",
+      examples: {
+        smallshop: "예) 소매점 내부 보일러가 파열되어 천장과 벽, 진열장이 동시에 파손된 경우",
+        salon: "예) 미용실 온수기 폭발로 천장과 벽, 인근 설비가 파손된 경우",
+        restaurant: "예) 음식점 보일러 폭발로 주방 천장과 벽, 조리 설비가 한꺼번에 파손된 경우"
+      }
+    },
+    "급배수시설 누출손해": {
+      desc: "급수·배수 배관 누수로 인한 바닥·벽·집기 등의 손해 및 인접 상가에 끼친 물적 손해를 보장합니다.",
+      examples: {
+        smallshop: null,
+        salon: null,
+        restaurant: "예) 주방 싱크대 아래 배관이 새어 바닥 마루와 집기가 젖어 망가지고 아래층 점포 천장까지 누수가 번진 경우"
+      }
+    },
+    "전기 위험/손해": {
+      desc: "누전·합선·과전류 등 전기적 사고로 기계·전기설비가 손상된 경우를 보장합니다.",
+      examples: {
+        smallshop: "예) 에어컨 누전으로 내부 전기부품이 타 손상된 경우",
+        salon: "예) 미용실 드라이기 합선으로 콘센트 주변이 타고 세척기 내부 전기부품이 손상된 경우",
+        restaurant: "예) 음식점 냉장·냉동고 전기 합선으로 컴프레서가 고장 나 교체가 필요한 경우"
+      }
+    },
+    "점포휴업일당": {
+      desc: "휴업 기간 동안 약정된 일당 금액을 지급하는 형태의 휴업손해 담보입니다.",
+      examples: {
+        smallshop: "예) 문구점 화재 복구 공사 기간 동안 하루당 약정된 휴업일당을 지급받는 경우",
+        salon: "예) 미용실 화재 복구 공사로 일정 기간 문을 닫는 동안 하루당 약정된 휴업일당을 지급받는 경우",
+        restaurant: "예) 음식점 내부 수리로 영업을 중단한 기간 동안 하루 기준의 휴업일당을 지급받는 경우"
+      }
+    },
+    "구내 냉동(냉장)물 손해": {
+      desc: "냉동·냉장 설비 고장 등으로 보관 중인 식재료가 부패하거나 손상된 경우의 손해를 보장합니다.",
+      examples: {
+        smallshop: null,
+        salon: null,
+        restaurant: "예) 냉동창고 고장으로 육류·해산물 등 식재료가 한꺼번에 상해 폐기해야 하는 경우"
+      }
+    },
+    "유리손해": {
+      desc: "점포 쇼윈도·유리문 등이 파손되었을 때 교체·수리 비용을 보장합니다.",
+      examples: {
+        smallshop: "예) 쇼윈도 유리가 차량 접촉으로 깨져 교체 비용이 발생한 경우",
+        salon: "예) 미용실 출입문 유리가 고객의 부주의로 깨져 새 유리로 교체한 경우",
+        restaurant: "예) 음식점 전면 유리창이 외부 충격으로 파손되어 교체 비용이 발생한 경우"
+      }
+    }
+  };
+
+  function fillDescriptionsAndExamples() {
+    const industry = industrySelect ? industrySelect.value : "smallshop";
+
+    document.querySelectorAll(".coverage-desc[data-title]").forEach(descEl => {
+      const titleKey = descEl.getAttribute("data-title");
+      const info = COVERAGE_INFO[titleKey];
+      if (!info || !info.desc) {
+        descEl.textContent = "";
+        return;
+      }
+      descEl.textContent = info.desc;
+    });
+
+    document.querySelectorAll(".coverage-tooltip[data-title]").forEach(tooltip => {
+      const titleKey = tooltip.getAttribute("data-title");
+      const info = COVERAGE_INFO[titleKey];
+      if (!info || !info.examples) {
+        tooltip.textContent = "";
+        return;
+      }
+
+      const example =
+        industry === "smallshop"
+          ? info.examples.smallshop
+          : industry === "salon"
+          ? info.examples.salon
+          : info.examples.restaurant;
+
+      tooltip.textContent = example || "";
+    });
+  }
+
   function initAll() {
     try {
       updateAutoFire();
@@ -1455,8 +1453,8 @@
       bindCheckboxSwitchSync();
       bindCheckButton();
       bindTooltips();
+      fillDescriptionsAndExamples();
     } catch (e) {
-      // 인앱 브라우저에서 에러 발생 시 디버깅용
       console.error("initAll error", e);
     }
   }
@@ -1467,6 +1465,7 @@
       updateSalonRows();
       updateRestaurantRows();
       resetAllSelections();
+      fillDescriptionsAndExamples();
     });
   }
   if (condLocation) condLocation.addEventListener("change", updateAutoFire);
@@ -1476,7 +1475,6 @@
     initAll();
   });
 
-  // iOS 인앱 브라우저 대비: DOMContentLoaded 이전에도 한 번 시도
   initAll();
 </script>
 </body>
