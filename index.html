@@ -302,6 +302,34 @@
       }
     }
 
+    /* 안내 문구 박스 */
+    .disclaimer-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #9ca3af;
+      background: #f9fafb;
+      font-size: 11px;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    .disclaimer-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .disclaimer-box ul {
+      margin: 0;
+      padding-left: 16px;
+    }
+
+    .disclaimer-box li {
+      margin-bottom: 2px;
+    }
+
     .auto-fire-box {
       margin-top: 10px;
       padding: 8px 10px;
@@ -901,6 +929,15 @@
             </button>
             <div id="checkResult"></div>
           </div>
+
+          <!-- 안내 문구 박스 -->
+          <div class="disclaimer-box">
+            <div class="disclaimer-title">중요 안내</div>
+            <ul>
+              <li>본 체크리스트는 법적 효력이나 보험금 등의 지급 근거가 될 수 없으며, 보험금 지급에 대한 세부 기준은 회사별로 상이할 수 있습니다.</li>
+              <li>본 체크리스트는 특정 보험사의 약관을 기준으로 하여 작성되었으며, 세부적인 보장은 회사별로 상이할 수 있으므로, 약관을 확인하여 주시길 바랍니다.</li>
+            </ul>
+          </div>
         </div>
       </main>
     </div>
@@ -1372,11 +1409,11 @@
       }
     },
     "급배수시설 누출손해": {
-      desc: "급수·배수 배관 누수로 인한 바닥·벽·집기 등의 손해 및 인접 상가에 끼친 물적 손해를 보장합니다.",
+      desc: "급수·배수 배관 누수로 인한 바닥·벽·집기 등의 물적 손해를 보장합니다.",
       examples: {
         smallshop: null,
         salon: null,
-        restaurant: "예) 주방 싱크대 아래 배관이 새어 바닥 마루와 집기가 젖어 망가지고 아래층 점포 천장까지 누수가 번진 경우"
+        restaurant: "예) 주방 싱크대 아래 배관이 새어 바닥 마루와 집기가 젖어 망가진 경우"
       }
     },
     "전기 위험/손해": {
@@ -1388,7 +1425,7 @@
       }
     },
     "점포휴업일당": {
-      desc: "휴업 기간 동안 약정된 일당 금액을 지급하는 형태의 휴업손해 담보입니다.",
+      desc: "화재, 벼락, 파열 또는 폭발, 항공기의 추락 또는 물체 떨어짐, 차량과의 충돌 또는 접촉, 붕괴, 침강 및 사태, 풍수재* 등 사고로 인한 휴업 기간 동안 약정된 일당 금액을 지급하는 형태의 휴업손해 담보입니다.  *특정 보험사만 보장",
       examples: {
         smallshop: "예) 문구점 화재 복구 공사 기간 동안 하루당 약정된 휴업일당을 지급받는 경우",
         salon: "예) 미용실 화재 복구 공사로 일정 기간 문을 닫는 동안 하루당 약정된 휴업일당을 지급받는 경우",
@@ -1408,7 +1445,7 @@
       examples: {
         smallshop: "예) 쇼윈도 유리가 차량 접촉으로 깨져 교체 비용이 발생한 경우",
         salon: "예) 미용실 출입문 유리가 고객의 부주의로 깨져 새 유리로 교체한 경우",
-        restaurant: "예) 음식점 전면 유리창이 외부 충격으로 파손되어 교체 비용이 발생한 경우"
+        restaurant: "예) 음식점 전면 유리창이 태풍, 회오리바람, 폭풍, 폭풍우, 냉해, 수해, 다른 물체와의 충돌 또는 접촉, 파열 또는 폭발, *제3자의 비행 또는 과실, 그 밖의 돌발적인 사고로 인해 파손되어 교체 비용이 발생한 경우   *특정 보험사만 보장"
       }
     }
   };
