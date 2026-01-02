@@ -200,7 +200,7 @@
       .coverage-row { grid-template-columns: 1fr; gap: 6px; }
     }
 
-    /* ✅ 결과 확인 후: 행 전체 색칠 (PC + 모바일 모두 적용) */
+    /* 결과 확인 후: 행 전체 색칠 */
     .coverage-row.row-ok {
       background: var(--ok-bg);
       border: 1px solid #86efac;
@@ -220,7 +220,6 @@
       padding: 10px 10px;
     }
 
-    /* 섹션 내 row 간격 */
     .section-body .coverage-row { margin: 8px 0; }
 
     .prep-box {
@@ -270,10 +269,10 @@
       color: var(--bad);
     }
 
-    /* ✅ 결과 확인 전: 라벨/배지 숨김(행은 비워두기) */
+    /* 결과 확인 전: 라벨/배지 숨김 */
     .prep-label, .prep-badge { display: none; }
 
-    /* ✅ 결과 확인 후: 라벨/배지 표시 */
+    /* 결과 확인 후: 라벨/배지 표시 */
     .prep-label.show { display: block; }
     .prep-badge.show { display: inline-flex; }
 
@@ -584,6 +583,27 @@
           <div class="auto-fire-value" id="autoFireValue">의무가입 미대상</div>
           <div class="auto-fire-desc" id="autoFireDesc">
             조건1(위치), 조건2(면적)을 바탕으로 의무가입 대상 여부를 표시합니다.
+          </div>
+        </div>
+
+        <!-- ✅ 보험료 산출 요율기준 -->
+        <div class="field" id="fieldRateBasis">
+          <div class="field-label">보험료 산출 요율기준</div>
+          <select id="rateBasisSelect">
+            <option value="" selected disabled>선택해 주세요</option>
+            <option value="operating">영위업종 기준</option>
+            <option value="rating">요율업종 기준</option>
+          </select>
+
+          <div class="auto-fire-box" id="rateBasisBox" style="margin-top:10px;">
+            <div class="auto-fire-title">
+              <span>요율기준 안내</span>
+              <span class="badge">자동 안내</span>
+            </div>
+            <div class="auto-fire-value" id="rateBasisValue">선택 필요</div>
+            <div class="auto-fire-desc" id="rateBasisDesc">
+              보험료 산출에 사용된 업종 기준을 선택하면 설명과 가입 상태를 안내합니다.
+            </div>
           </div>
         </div>
 
@@ -1072,6 +1092,11 @@
   const autoFireDesc = document.getElementById("autoFireDesc");
   const resultBox = document.getElementById("checkResult");
 
+  // ✅ 보험료 산출 요율기준 UI
+  const rateBasisSelect = document.getElementById("rateBasisSelect");
+  const rateBasisValue = document.getElementById("rateBasisValue");
+  const rateBasisDesc = document.getElementById("rateBasisDesc");
+
   function setCondDisabled(disabled) {
     if (!condLocation || !condArea || !fieldCondLocation || !fieldCondArea) return;
     condLocation.disabled = disabled;
@@ -1124,6 +1149,39 @@
 
     autoFireValue.textContent = result;
     autoFireDesc.textContent = desc;
+  }
+
+  function updateRateBasisUI() {
+    if (!rateBasisSelect || !rateBasisValue || !rateBasisDesc) return;
+    const v = rateBasisSelect.value;
+
+    if (!v) {
+      rateBasisValue.textContent = "선택 필요";
+      rateBasisValue.style.color = "#1d4ed8";
+      rateBasisDesc.textContent =
+        "보험료 산출에 사용된 업종 기준을 선택하면 설명과 가입 상태를 안내합니다.";
+      return;
+    }
+
+    if (v === "operating") {
+      rateBasisValue.textContent = "가입 상태 양호";
+      rateBasisValue.style.color = "#16a34a";
+      rateBasisDesc.textContent =
+        "영위업종: 가입자가 실제로 영위하는 업종(계약자가 가입하는 재물 업종) 기준으로 가입한 상태입니다.";
+      return;
+    }
+
+    if (v === "rating") {
+      rateBasisValue.textContent = "보완 필요";
+      rateBasisValue.style.color = "#f59e0b";
+      rateBasisDesc.textContent =
+        "요율업종: 가입자가 있는 건물에서 가장 화재발생 확률이 높은 업종 기준입니다. 요율업종 기준으로 가입한 경우 보완이 필요하며, 건물 내 위험한 업무를 수행하는 가게 입점 시 배서 필수입니다.";
+      return;
+    }
+  }
+
+  if (rateBasisSelect) {
+    rateBasisSelect.addEventListener("change", updateRateBasisUI);
   }
 
   const singleChoiceNames = [
@@ -1246,7 +1304,6 @@
     return !!(switchInput && switchInput.checked);
   }
 
-  /* ✅ 배지 + 행 전체 색칠까지 같이 세팅 */
   function setPrepBadge(row, state) {
     const badge = row.querySelector("[data-prep]");
     if (!badge) return;
@@ -1291,7 +1348,6 @@
     document.querySelectorAll(".coverage-row").forEach(r => updateRowPreparedness(r));
   }
 
-  /* 체크박스-스위치 동기화만 수행 (준비 정도는 실시간 업데이트 안 함) */
   function bindCheckboxSwitchSync() {
     const rows = document.querySelectorAll(".coverage-row");
 
@@ -1379,7 +1435,6 @@
         const checkboxes = checkboxGroup ? Array.from(checkboxGroup.querySelectorAll("input[type='checkbox']")) : [];
         const hasCheckbox = checkboxes.length > 0;
 
-        // 세부사항 체크: 스위치가 ON이면 세부사항이 "완결"되어야 함
         if (hasCheckbox && isOn) {
           if (normalizeText(name) === normalizeText("음식물 배상책임")) {
             const locChecked = checkboxes.some(c => c.checked && c.getAttribute("data-subgroup") === "loc");
@@ -1402,9 +1457,6 @@
 
       resultBox.style.display = "block";
 
-      // ✅ 세부사항 미완료가 있으면: "결과 산출" 자체를 하지 않음
-      // - 준비 정도(배지/라벨) 표시 안 함
-      // - 행 배경색 표시 안 함
       if (detailMissing.length > 0) {
         resultBox.style.borderColor = "#f97316";
         resultBox.style.background = "#fff7ed";
@@ -1434,7 +1486,6 @@
         resultBox.textContent = `${missing.join(", ")} 담보의 보완이 필요합니다.`;
       }
 
-      // ✅ 세부사항 문제가 없을 때만: 준비 정도 표시 + 계산(행 배경 포함)
       showAllPreparednessUI();
       updateAllPreparedness();
     });
@@ -1677,6 +1728,9 @@
     bindTooltips();
     fillDescriptionsAndExamples();
     hideAllPreparednessUI();
+
+    // ✅ 추가
+    updateRateBasisUI();
   }
 
   if (industrySelect) {
@@ -1686,6 +1740,7 @@
       updateRestaurantRows();
       resetAllSelections();
       fillDescriptionsAndExamples();
+      updateRateBasisUI(); // 업종 변경 시에도 안내 박스 유지
     });
   }
   if (condLocation) condLocation.addEventListener("change", updateAutoFire);
